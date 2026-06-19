@@ -117,8 +117,11 @@ AppDataSource.initialize()
     // Start the server
     app.listen(port, () => {
       logger.info(`Server is running on port ${port}`);
+      console.log(`Server is successfully running on port ${port}`); // Also print to console
     });
   })
   .catch((error) => {
     logger.error("Error connecting to the database:", error);
+    console.error("CRITICAL ERROR: Failed to connect to the database:", error); // Force to console
+    process.exit(1); // Crash the server so Render knows it failed!
   });
