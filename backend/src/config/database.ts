@@ -39,7 +39,7 @@ export const AppDataSource = new DataSource({
         password: process.env.DB_PASSWORD || "postgres",
         database: process.env.DB_NAME || "attendance",
       }),
-  synchronize: true, // Turned ON to automatically create tables in Supabase!
+  synchronize: false, // Turned back off for production safety now that tables are created!
   logging: ["error", "warn", "info"], // Enable logging to see what's happening
   extra: {
     connectionTimeoutMillis: 10000, // 10 seconds timeout instead of hanging forever
