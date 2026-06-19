@@ -1,0 +1,62 @@
+services:
+  # The Node.js Backend API
+  - type: web
+    name: attendance-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: attendance-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: attendance-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: attendance-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: attendance-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: attendance-db
+          property: database
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: attendance-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: attendance-redis
+          property: port
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: ADMIN_EMAIL
+        value: admin@college.edu
+      - key: ADMIN_PASSWORD
+        value: ComplexAdminPassword1!
+
+  # The Redis Cache
+  - type: redis
+    name: attendance-redis
+    ipAllowList: []
+    plan: free
+
+databases:
+  # The PostgreSQL Database
+  - name: attendance-db
+    plan: free
