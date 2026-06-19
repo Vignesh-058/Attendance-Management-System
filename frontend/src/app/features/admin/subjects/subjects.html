@@ -1,0 +1,86 @@
+<div class="admin-container">
+      <h2>Manage Subjects</h2>
+      
+      <mat-card class="form-card">
+        <mat-card-content>
+          <form (ngSubmit)="saveSubject()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Subject Name</mat-label>
+              <input matInput [(ngModel)]="currentSubject.name" name="name" required>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Subject Code</mat-label>
+              <input matInput [(ngModel)]="currentSubject.code" name="code" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Semester</mat-label>
+              <input matInput [(ngModel)]="currentSubject.semester" name="semester">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Course</mat-label>
+              <mat-select [(ngModel)]="currentSubject.courseId" name="courseId">
+                <mat-option *ngFor="let course of courses" [value]="course.id">
+                  {{course.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Assigned Teacher</mat-label>
+              <mat-select [(ngModel)]="currentSubject.teacherId" name="teacherId">
+                <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">
+                  {{teacher.firstName}} {{teacher.lastName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit">
+              {{ isEditing ? 'Update' : 'Create' }} Subject
+            </button>
+            <button mat-button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <table mat-table [dataSource]="subjects" class="mat-elevation-z8">
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef> Code </th>
+          <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="course">
+          <th mat-header-cell *matHeaderCellDef> Course </th>
+          <td mat-cell *matCellDef="let element"> {{element.course?.name || 'N/A'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="teacher">
+          <th mat-header-cell *matHeaderCellDef> Teacher </th>
+          <td mat-cell *matCellDef="let element"> 
+            {{element.teacher ? element.teacher.firstName + ' ' + element.teacher.lastName : 'Unassigned'}} 
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="editSubject(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteSubject(element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>

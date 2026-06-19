@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          # NOTE: Hardcoded password acceptable here purely for local/CI test container isolation
+          POSTGRES_PASSWORD: password123
+          POSTGRES_DB: attendance
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Dependencies (Backend)
+      working-directory: ./backend
+      run: npm ci || npm install
+      
+    - name: Build (Backend)
+      working-directory: ./backend
+      run: npm run build
+      
+    - name: Run Tests (Backend)
+      working-directory: ./backend
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_USER: postgres
+        DB_PASSWORD: password123
+        DB_NAME: attendance
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+      run: npm test

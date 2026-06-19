@@ -1,0 +1,97 @@
+<div class="dashboard-header">
+  <h1>Dashboard Overview</h1>
+  <p class="subtitle">Welcome to your {{ role }} Portal</p>
+</div>
+
+<div class="loader-container" *ngIf="isLoading">
+  <div class="loader"></div>
+</div>
+
+<div class="error-container" *ngIf="error">
+  <mat-icon color="warn">error</mat-icon>
+  <p>{{ error }}</p>
+</div>
+
+<div class="dashboard-content" *ngIf="!isLoading && !error && stats">
+  
+  <!-- Admin Dashboard -->
+  <div class="stats-grid" *ngIf="role === 'Admin'">
+    <mat-card class="stat-card glass-panel primary-gradient" [routerLink]="['/admin/users']" [queryParams]="{role: 'Student'}">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Total Students</h3>
+          <h2>{{ stats.totalStudents || 0 }}</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>school</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel success-gradient" [routerLink]="['/admin/users']" [queryParams]="{role: 'Teacher'}">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Total Teachers</h3>
+          <h2>{{ stats.totalTeachers || 0 }}</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>local_library</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel warning-gradient" routerLink="/reports">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Campus Attendance</h3>
+          <h2>{{ stats.attendancePercentage || 0 }}%</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>pie_chart</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Teacher Dashboard -->
+  <div class="stats-grid" *ngIf="role === 'Teacher'">
+    <mat-card class="stat-card glass-panel primary-gradient" routerLink="/attendance">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Assigned Subjects</h3>
+          <h2>{{ stats.assignedSubjects || 0 }}</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>menu_book</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Student Dashboard -->
+  <div class="stats-grid" *ngIf="role === 'Student'">
+    <mat-card class="stat-card glass-panel primary-gradient" routerLink="/attendance">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Total Classes</h3>
+          <h2>{{ stats.totalClasses || 0 }}</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>calendar_today</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel success-gradient" routerLink="/attendance">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Attended</h3>
+          <h2>{{ stats.attended || 0 }}</h2>
+        </div>
+        <div class="stat-icon"><mat-icon>check_circle</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel" [ngClass]="(stats.attendancePercentage < 75) ? 'danger-gradient' : 'warning-gradient'" routerLink="/attendance">
+      <mat-card-content>
+        <div class="stat-info">
+          <h3>Attendance %</h3>
+          <h2>{{ stats.attendancePercentage || 0 }}%</h2>
+          <span class="badge" *ngIf="stats.attendancePercentage < 75">Defaulter Warning</span>
+        </div>
+        <div class="stat-icon"><mat-icon>trending_up</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

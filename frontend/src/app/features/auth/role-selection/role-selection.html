@@ -1,0 +1,33 @@
+<div class="selection-wrapper">
+  <div class="header-content">
+    <mat-icon class="main-logo">school</mat-icon>
+    <h1>Attendance Portal</h1>
+    <p class="subtitle">Please select your portal to continue</p>
+  </div>
+
+  <div class="cards-container">
+    <mat-card class="glass-panel portal-card student-card" routerLink="/login/student" matRipple>
+      <mat-card-content>
+        <mat-icon class="portal-icon">face</mat-icon>
+        <h2>Student Portal</h2>
+        <p>Sign in to view attendance and reports</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="glass-panel portal-card teacher-card" routerLink="/login/teacher" matRipple>
+      <mat-card-content>
+        <mat-icon class="portal-icon">local_library</mat-icon>
+        <h2>Teacher Portal</h2>
+        <p>Sign in to mark attendance and view classes</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="glass-panel portal-card admin-card" routerLink="/login/admin" matRipple>
+      <mat-card-content>
+        <mat-icon class="portal-icon">admin_panel_settings</mat-icon>
+        <h2>Admin Portal</h2>
+        <p>Sign in to manage institution data</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

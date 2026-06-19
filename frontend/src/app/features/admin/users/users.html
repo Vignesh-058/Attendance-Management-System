@@ -1,0 +1,129 @@
+<div class="admin-container">
+      <h2>Manage Users</h2>
+      
+      <mat-card class="form-card">
+        <mat-card-content>
+          <form (ngSubmit)="saveUser()">
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>First Name</mat-label>
+                <input matInput [(ngModel)]="currentUser.firstName" name="firstName" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput [(ngModel)]="currentUser.lastName" name="lastName" required>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="currentUser.email" name="email" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="half-width" *ngIf="!isEditing">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [(ngModel)]="currentUser.password" name="password" required>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Role</mat-label>
+                <mat-select [(ngModel)]="currentUser.role" name="role" [disabled]="isEditing" required>
+                  <mat-option value="Admin">Admin</mat-option>
+                  <mat-option value="Teacher">Teacher</mat-option>
+                  <mat-option value="Student">Student</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Department</mat-label>
+                <mat-select [(ngModel)]="currentUser.departmentId" name="departmentId">
+                  <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                    {{dept.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row" *ngIf="currentUser.role === 'Student'">
+              <mat-form-field appearance="fill" class="third-width">
+                <mat-label>Roll Number</mat-label>
+                <input matInput [(ngModel)]="currentUser.rollNumber" name="rollNumber">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="third-width">
+                <mat-label>Semester</mat-label>
+                <input matInput [(ngModel)]="currentUser.semester" name="semester">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="third-width">
+                <mat-label>Section</mat-label>
+                <input matInput [(ngModel)]="currentUser.section" name="section">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row" *ngIf="currentUser.role === 'Teacher'">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Designation</mat-label>
+                <input matInput [(ngModel)]="currentUser.designation" name="designation">
+              </mat-form-field>
+            </div>
+
+            <button mat-raised-button color="primary" type="submit">
+              {{ isEditing ? 'Update' : 'Create' }} User
+            </button>
+            <button mat-button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Filter by Role</mat-label>
+        <mat-select [(ngModel)]="selectedRoleFilter" (selectionChange)="loadData()">
+          <mat-option value="">All</mat-option>
+          <mat-option value="Admin">Admin</mat-option>
+          <mat-option value="Teacher">Teacher</mat-option>
+          <mat-option value="Student">Student</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <table mat-table [dataSource]="users" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef> Role </th>
+          <td mat-cell *matCellDef="let element"> 
+            {{ isString(element.role) ? element.role : element.role?.name }} 
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef> Department </th>
+          <td mat-cell *matCellDef="let element"> {{element.department?.name || 'N/A'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="editUser(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteUser(element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>

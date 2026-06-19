@@ -1,0 +1,69 @@
+<div class="report-header">
+  <div class="title-section">
+    <h1>Monthly Reports</h1>
+    <p class="subtitle">Detailed attendance analytics for students</p>
+  </div>
+  
+  <div class="controls-section glass-panel">
+    <mat-form-field appearance="outline">
+      <mat-label>Month</mat-label>
+      <mat-select [(ngModel)]="selectedMonth" (selectionChange)="fetchReport()">
+        <mat-option *ngFor="let m of months" [value]="m.value">{{ m.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Year</mat-label>
+      <mat-select [(ngModel)]="selectedYear" (selectionChange)="fetchReport()">
+        <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" class="export-btn" (click)="exportCSV()" [disabled]="reportData.length === 0">
+      <mat-icon>file_download</mat-icon> Export CSV
+    </button>
+    <button mat-raised-button color="primary" class="export-btn" (click)="exportPDF()" [disabled]="reportData.length === 0" style="margin-left: 10px;">
+      <mat-icon>picture_as_pdf</mat-icon> Export PDF
+    </button>
+  </div>
+</div>
+
+<mat-card class="glass-panel report-card">
+  <div class="loader-container" *ngIf="isLoading">
+    <div class="loader"></div>
+  </div>
+
+  <mat-card-content *ngIf="!isLoading">
+    <div class="empty-state" *ngIf="reportData.length === 0">
+      <mat-icon>event_busy</mat-icon>
+      <p>No attendance records found for this period.</p>
+    </div>
+
+    <table mat-table [dataSource]="reportData" class="glass-table" *ngIf="reportData.length > 0">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Student Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.user?.firstName}} {{element.user?.lastName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.user?.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> 
+          <span class="status-badge" [ngClass]="element.status.toLowerCase()">{{element.status}}</span> 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,51 @@
+<div class="login-wrapper">
+  <mat-card class="glass-panel login-card">
+    <mat-card-header>
+      <div class="header-content">
+        <mat-icon class="logo-icon">{{ portalIcon }}</mat-icon>
+        <mat-card-title>{{ portalRole }} Portal</mat-card-title>
+        <mat-card-subtitle>Sign in to manage your time</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-field">
+          <mat-form-field appearance="outline" color="primary">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="john.doe@company.com">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field">
+          <mat-form-field appearance="outline" color="primary">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading" class="loader"></span>
+        </button>
+
+        <div class="footer-links">
+          <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
+          <div class="register-prompt">
+            Don't have an account? <a routerLink="/register">Sign up</a>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

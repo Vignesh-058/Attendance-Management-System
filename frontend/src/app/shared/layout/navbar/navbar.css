@@ -1,0 +1,121 @@
+.glass-navbar {
+  background: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.brand-icon {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+.brand-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.highlight {
+  color: var(--primary-color);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.spacer-sm {
+  width: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-links button {
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0 1rem;
+}
+
+.nav-links button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.active-link {
+  color: var(--primary-color) !important;
+  background: rgba(79, 70, 229, 0.1) !important;
+}
+
+.active-link mat-icon {
+  color: var(--primary-color);
+}
+
+.user-btn {
+  color: var(--text-primary);
+}
+
+.user-info {
+  padding: 1rem;
+  outline: none;
+}
+
+.user-info .name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.user-info .role {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+::ng-deep .glass-menu {
+  background: rgba(30, 41, 59, 0.9) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px !important;
+}
+
+::ng-deep .glass-menu .mat-mdc-menu-item {
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .glass-menu .mat-mdc-menu-item:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (max-width: 600px) {
+  .brand-name {
+    display: none;
+  }
+  .nav-links button span.mdc-button__label span:not(.mat-icon) {
+    display: none;
+  }
+}

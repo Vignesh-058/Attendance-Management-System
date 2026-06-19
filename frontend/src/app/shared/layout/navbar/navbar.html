@@ -1,0 +1,70 @@
+<mat-toolbar class="glass-navbar">
+  <div class="nav-container">
+    <div class="brand" routerLink="/dashboard">
+      <mat-icon class="brand-icon">fingerprint</mat-icon>
+      <span class="brand-name">Attendance<span class="highlight">Pro</span></span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="nav-links">
+      <button mat-button routerLink="/dashboard" routerLinkActive="active-link">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </button>
+
+      <!-- Admin Links -->
+      <ng-container *ngIf="user?.role === 'Admin'">
+        <button mat-button routerLink="/admin/users" routerLinkActive="active-link">
+          <mat-icon>people</mat-icon> Users
+        </button>
+        <button mat-button routerLink="/admin/departments" routerLinkActive="active-link">
+          <mat-icon>domain</mat-icon> Departments
+        </button>
+        <button mat-button routerLink="/admin/courses" routerLinkActive="active-link">
+          <mat-icon>school</mat-icon> Courses
+        </button>
+        <button mat-button routerLink="/admin/subjects" routerLinkActive="active-link">
+          <mat-icon>menu_book</mat-icon> Subjects
+        </button>
+        <button mat-button routerLink="/reports" routerLinkActive="active-link">
+          <mat-icon>assessment</mat-icon> Reports
+        </button>
+      </ng-container>
+
+      <!-- Teacher Links -->
+      <ng-container *ngIf="user?.role === 'Teacher'">
+        <button mat-button routerLink="/attendance" routerLinkActive="active-link">
+          <mat-icon>fact_check</mat-icon> Take Attendance
+        </button>
+        <button mat-button routerLink="/reports" routerLinkActive="active-link">
+          <mat-icon>assessment</mat-icon> Reports
+        </button>
+      </ng-container>
+
+      <!-- Student Links -->
+      <ng-container *ngIf="user?.role === 'Student'">
+        <button mat-button routerLink="/attendance/view" routerLinkActive="active-link">
+          <mat-icon>visibility</mat-icon> My Attendance
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-btn">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    
+    <mat-menu #userMenu="matMenu" class="glass-menu">
+      <div class="user-info">
+        <p class="name">{{ user?.firstName }} {{ user?.lastName }}</p>
+        <p class="role">{{ user?.role }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
